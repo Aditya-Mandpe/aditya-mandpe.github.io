@@ -706,7 +706,7 @@
         <div class="metrics">
           <div class="metric"><div class="m-val">10%</div><div class="m-label">Higher ATC vs<br>shoot-based imagery</div></div>
           <div class="metric"><div class="m-val">15&ndash;20%</div><div class="m-label">Higher CTR across<br>categories</div></div>
-          <div class="metric"><div class="m-val">40%</div><div class="m-label">Efficiency gain;<br>40% fewer headcount</div></div>
+          <div class="metric"><div class="m-val">40%</div><div class="m-label">Fewer team members<br>for same output</div></div>
           <div class="metric"><div class="m-val">12K+</div><div class="m-label">Unique style prompts<br>in library</div></div>
         </div>
       </div>
@@ -718,64 +718,123 @@
       <div style="height:1px; background:#e2e2e2; margin-top:0.75rem;"></div>
     </div>
 
-    <!-- TIER 2 GRID: 4 compact cards -->
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem 3rem; margin-bottom:1rem;">
+    <style>
+      .more-card { border: 1px solid #e8e6e1; border-radius: 8px; overflow: hidden; background: #fff; }
+      .more-card-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; cursor: pointer; gap: 1rem; }
+      .more-card-header:hover { background: #f8f7f4; }
+      .more-card-thumb { display: flex; gap: 0.3rem; flex-shrink: 0; }
+      .more-card-thumb img { width: 52px; height: 52px; object-fit: cover; border-radius: 3px; }
+      .more-card-info { flex: 1; }
+      .more-card-tag { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #c8a96e; }
+      .more-card-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.1rem; font-weight: 400; color: #111; margin: 0.2rem 0 0; }
+      .more-card-chevron { font-size: 1rem; color: #aaa; transition: transform 0.3s; flex-shrink: 0; }
+      .more-card-chevron.open { transform: rotate(180deg); }
+      .more-card-body { display: none; padding: 0 1.25rem 1.25rem; border-top: 1px solid #f0ede8; }
+      .more-card-body.open { display: block; }
+    </style>
 
-      <!-- Compact: Jockey -->
-      <div class="fade-up">
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.3rem; margin-bottom:0.75rem;">
-          <img src="images/Jockey_video1.gif" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
-          <img src="images/Jockey_image2.jpg" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
-          <img src="images/Jockey_video3.gif" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.3rem; margin-bottom:0.75rem;">
-          <img src="images/Jockey_image4.jpg" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
-          <img src="images/Jockey_image5.jpg" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
-          <img src="images/Jockey image 6.jpg" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
-        </div>
-        <span style="font-size:0.68rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:#c8a96e;">Jockey &middot; Pinklemonade &middot; Campaign</span>
-        <h3 style="font-family:'DM Serif Display',Georgia,serif; font-size:1.2rem; font-weight:400; margin:0.3rem 0 0.3rem; color:#111;">Jockey Innerwear Campaign</h3>
-        <p style="font-size:0.85rem; color:#666; line-height:1.6;">End-to-end campaign production. Briefing, casting, shoot direction, post-production. Bengaluru, 2020.</p>
-      </div>
+    <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem;">
 
-      <!-- Compact: Stayfree PV Sindhu -->
-      <div class="fade-up">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.3rem; margin-bottom:0.75rem;">
-          <img src="images/PV Sindu_right1.png" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
-          <img src="images/PV Sindhu_left 1.jpg" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
-        </div>
-        <div style="margin-bottom:0.75rem;">
-          <img src="images/PV Sindhu_right 2.png" style="width:100%; aspect-ratio:16/7; object-fit:cover; display:block;">
-        </div>
-        <span style="font-size:0.68rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:#c8a96e;">Stayfree &middot; Unyque &middot; Brand Campaign</span>
-        <h3 style="font-family:'DM Serif Display',Georgia,serif; font-size:1.2rem; font-weight:400; margin:0.3rem 0 0.3rem; color:#111;">Stayfree ft. PV Sindhu</h3>
-        <p style="font-size:0.85rem; color:#666; line-height:1.6;">Digital brand campaign featuring Indian badminton star PV Sindhu. End-to-end production. Mumbai, 2022.</p>
-      </div>
-
-      <!-- Compact: Dell EMC -->
-      <div class="fade-up">
-        <img src="images/Dell_Point6_1.jpg" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block; margin-bottom:0.75rem;">
-        <span style="font-size:0.68rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:#c8a96e;">Dell EMC &middot; Unyque &middot; International</span>
-        <h3 style="font-family:'DM Serif Display',Georgia,serif; font-size:1.2rem; font-weight:400; margin:0.3rem 0 0.3rem; color:#111;">Dell EMC Singapore</h3>
-        <p style="font-size:0.85rem; color:#666; line-height:1.6;">International corporate video production. Independently sourced, coordinated, and executed shoots in Singapore from Mumbai.</p>
-      </div>
-
-      <!-- Compact: Ad Films -->
-      <div class="fade-up">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.3rem; margin-bottom:0.75rem;">
-          <div style="position:relative; padding-bottom:56.25%; overflow:hidden; aspect-ratio:16/9;">
-            <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/WcSBMTqj8qQ" frameborder="0" allowfullscreen></iframe>
+      <!-- Expandable: Jockey -->
+      <div class="more-card fade-up">
+        <div class="more-card-header" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.more-card-chevron').classList.toggle('open')">
+          <div class="more-card-thumb">
+            <img src="images/Jockey_image2.jpg" alt="">
+            <img src="images/Jockey_image4.jpg" alt="">
+            <img src="images/Jockey_image5.jpg" alt="">
           </div>
-          <div style="position:relative; padding-bottom:56.25%; overflow:hidden; aspect-ratio:16/9;">
-            <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/mjRIJELmbPg" frameborder="0" allowfullscreen></iframe>
+          <div class="more-card-info">
+            <div class="more-card-tag">Jockey &middot; Pinklemonade &middot; Campaign</div>
+            <div class="more-card-title">Jockey Innerwear Campaign</div>
           </div>
+          <div class="more-card-chevron">&#8964;</div>
         </div>
-        <div style="position:relative; padding-bottom:56.25%; overflow:hidden; margin-bottom:0.75rem;">
-          <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/WehQF5onnGI" frameborder="0" allowfullscreen></iframe>
+        <div class="more-card-body">
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.4rem; margin: 1rem 0 0.4rem;">
+            <img src="images/Jockey_video1.gif" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
+            <img src="images/Jockey_image2.jpg" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
+            <img src="images/Jockey_video3.gif" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.4rem; margin-bottom:1rem;">
+            <img src="images/Jockey_image4.jpg" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
+            <img src="images/Jockey_image5.jpg" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
+            <img src="images/Jockey image 6.jpg" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
+          </div>
+          <p style="font-size:0.88rem; color:#555; line-height:1.7;">End-to-end campaign production for Jockey innerwear. Briefing, casting, shoot direction, and post-production. Pinklemonade agency, Bengaluru, 2020.</p>
         </div>
-        <span style="font-size:0.68rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:#c8a96e;">Videosource &middot; Unyque &middot; Ad Films</span>
-        <h3 style="font-family:'DM Serif Display',Georgia,serif; font-size:1.2rem; font-weight:400; margin:0.3rem 0 0.3rem; color:#111;">Ad Film &amp; Commercial Work</h3>
-        <p style="font-size:0.85rem; color:#666; line-height:1.6;">Club Mahindra, Mahindra Supro, Diamond Producers Association. Agency years, 2017 to 2020.</p>
+      </div>
+
+      <!-- Expandable: Stayfree PV Sindhu -->
+      <div class="more-card fade-up">
+        <div class="more-card-header" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.more-card-chevron').classList.toggle('open')">
+          <div class="more-card-thumb">
+            <img src="images/PV Sindu_right1.png" alt="">
+            <img src="images/PV Sindhu_left 1.jpg" alt="">
+            <img src="images/PV Sindhu_right 2.png" alt="">
+          </div>
+          <div class="more-card-info">
+            <div class="more-card-tag">Stayfree &middot; Unyque &middot; Brand Campaign</div>
+            <div class="more-card-title">Stayfree ft. PV Sindhu</div>
+          </div>
+          <div class="more-card-chevron">&#8964;</div>
+        </div>
+        <div class="more-card-body">
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.4rem; margin: 1rem 0 1rem;">
+            <img src="images/PV Sindu_right1.png" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
+            <img src="images/PV Sindhu_left 1.jpg" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
+            <img src="images/PV Sindhu_right 2.png" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;">
+          </div>
+          <p style="font-size:0.88rem; color:#555; line-height:1.7;">Digital brand campaign for Stayfree featuring Indian badminton star PV Sindhu. End-to-end production during the Unyque stint in Mumbai, 2022.</p>
+        </div>
+      </div>
+
+      <!-- Expandable: Dell EMC -->
+      <div class="more-card fade-up">
+        <div class="more-card-header" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.more-card-chevron').classList.toggle('open')">
+          <div class="more-card-thumb">
+            <img src="images/Dell_Point6_1.jpg" alt="" style="width:160px !important; height:52px !important;">
+          </div>
+          <div class="more-card-info">
+            <div class="more-card-tag">Dell EMC &middot; Unyque &middot; International</div>
+            <div class="more-card-title">Dell EMC Singapore</div>
+          </div>
+          <div class="more-card-chevron">&#8964;</div>
+        </div>
+        <div class="more-card-body">
+          <img src="images/Dell_Point6_1.jpg" style="width:100%; display:block; margin: 1rem 0 1rem; object-fit:cover;">
+          <p style="font-size:0.88rem; color:#555; line-height:1.7;">Independently sourced and executed a Dell EMC corporate video project from Mumbai, with shoots in Singapore. Client management, crew coordination, on-ground direction, and delivery all handled solo.</p>
+        </div>
+      </div>
+
+      <!-- Expandable: Ad Films -->
+      <div class="more-card fade-up">
+        <div class="more-card-header" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.more-card-chevron').classList.toggle('open')">
+          <div class="more-card-thumb">
+            <img src="https://img.youtube.com/vi/WcSBMTqj8qQ/mqdefault.jpg" alt="">
+            <img src="https://img.youtube.com/vi/mjRIJELmbPg/mqdefault.jpg" alt="">
+            <img src="https://img.youtube.com/vi/WehQF5onnGI/mqdefault.jpg" alt="">
+          </div>
+          <div class="more-card-info">
+            <div class="more-card-tag">Videosource &middot; Unyque &middot; Ad Films</div>
+            <div class="more-card-title">Ad Film &amp; Commercial Work</div>
+          </div>
+          <div class="more-card-chevron">&#8964;</div>
+        </div>
+        <div class="more-card-body">
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem; margin: 1rem 0 0.5rem;">
+            <div style="position:relative; padding-bottom:56.25%; overflow:hidden;">
+              <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/WcSBMTqj8qQ" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div style="position:relative; padding-bottom:56.25%; overflow:hidden;">
+              <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/mjRIJELmbPg" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div style="position:relative; padding-bottom:56.25%; overflow:hidden;">
+              <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/WehQF5onnGI" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+          <p style="font-size:0.78rem; color:#b0b0b0; margin-bottom:1rem;">Club Mahindra × Ruskin Bond · 2019 &nbsp;&nbsp; Diamond Producers Association · 2018 &nbsp;&nbsp; Mahindra Supro · 2017</p>
+          <p style="font-size:0.88rem; color:#555; line-height:1.7;">Ad film productions from the agency years at Videosource and Unyque. Each managed end to end.</p>
+        </div>
       </div>
 
     </div>
