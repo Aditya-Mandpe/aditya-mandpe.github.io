@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Machine — Aditya Mandpe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0f0f0f;
+    --mid: #3d3d3d;
+    --soft: #767676;
+    --faint: #b0b0b0;
+    --rule: #e2e2e2;
+    --bg: #f8f7f4;
+    --card: #ffffff;
+    --navy: #0f1628;
+    --gold: #c8a96e;
+    --green: #15803d;
+    --green-bg: #f0fdf4;
+    --green-border: #bbf7d0;
+    --blue: #1d4ed8;
+    --blue-bg: #eff6ff;
+    --amber: #b45309;
+    --amber-bg: #fffbeb;
+    --red: #b91c1c;
+    --red-bg: #fef2f2;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  body { font-family: var(--sans); font-weight: 300; background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+
+  /* NAV */
+  nav { background: var(--navy); height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-family: var(--serif); color: #fff; font-size: 18px; font-weight: 400; }
+  .nav-sub { color: rgba(255,255,255,0.3); font-size: 12px; }
+  .nav-tabs { display: flex; gap: 2px; }
+  .nav-tab { background: transparent; color: rgba(255,255,255,0.45); border: none; border-radius: 4px; padding: 0.35rem 0.85rem; font-size: 13px; cursor: pointer; font-weight: 400; font-family: var(--sans); transition: all 0.15s; }
+  .nav-tab.active { background: rgba(200,169,110,0.2); color: var(--gold); font-weight: 500; }
+
+  /* LAYOUT */
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .card { background: var(--card); border-radius: 8px; border: 1px solid var(--rule); padding: 1.5rem; }
+
+  /* TYPOGRAPHY */
+  .serif { font-family: var(--serif); font-weight: 400; }
+  .label-sm { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--soft); }
+  .gold-tag { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
+
+  /* BUTTONS */
+  .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.55rem 1rem; font-family: var(--sans); font-size: 13px; font-weight: 500; border-radius: 6px; cursor: pointer; border: none; transition: opacity 0.15s; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary { background: var(--navy); color: #fff; }
+  .btn-secondary { background: #f4f3f0; color: #333; border: 1px solid var(--rule); }
+  .btn-gold { background: var(--gold); color: #fff; }
+  .btn-ghost { background: none; color: var(--gold); border: 1px solid #e8d9bf; }
+  .btn-danger { background: none; color: var(--red); border: 1px solid #fecaca; }
+  .btn-full { width: 100%; justify-content: center; }
+
+  /* STATS GRID */
+  .stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.875rem; margin-bottom: 1.5rem; }
+  .stat-card { background: var(--card); border-radius: 8px; border: 1px solid var(--rule); padding: 1.1rem; text-align: center; }
+  .stat-num { font-family: var(--serif); font-size: 34px; line-height: 1; }
+  .stat-label { font-size: 11px; color: var(--soft); margin-top: 6px; font-weight: 500; line-height: 1.3; }
+
+  /* VERDICT COLORS */
+  .v-strong { color: var(--green); background: var(--green-bg); border: 1px solid var(--green-border); }
+  .v-good { color: var(--blue); background: var(--blue-bg); border: 1px solid #bfdbfe; }
+  .v-possible { color: var(--amber); background: var(--amber-bg); border: 1px solid #fde68a; }
+  .v-weak { color: var(--red); background: var(--red-bg); border: 1px solid #fecaca; }
+
+  .verdict-badge { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 4px; display: inline-block; }
+  .score-large { font-family: var(--serif); font-size: 48px; line-height: 1; }
+
+  /* JOB CARDS */
+  .job-card { background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: 0.9rem 1rem; margin-bottom: 0.6rem; cursor: pointer; transition: border-color 0.15s; }
+  .job-card.selected { border: 2px solid var(--navy); }
+  .job-card:hover { border-color: #ccc; }
+
+  /* DETAIL PANEL */
+  .detail-panel { background: var(--card); border-radius: 8px; border: 1px solid var(--rule); padding: 1.5rem; position: sticky; top: 1rem; max-height: 88vh; overflow-y: auto; }
+
+  /* SCORE BLOCK */
+  .score-block { border-radius: 8px; padding: 1.1rem; margin-bottom: 1.25rem; }
+  .apply-tip { font-size: 12px; color: var(--mid); margin-bottom: 3px; }
+
+  /* METRICS TAGS */
+  .tag { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 4px; display: inline-block; margin: 2px 2px 2px 0; }
+
+  /* TEXTAREA / INPUT */
+  textarea, input[type=text], input[type=password] {
+    width: 100%; border: 1px solid var(--rule); border-radius: 6px;
+    padding: 0.75rem; font-size: 13px; font-family: var(--sans);
+    outline: none; background: #fff; resize: vertical;
+  }
+  textarea:focus, input:focus { border-color: #aaa; }
+
+  /* APPLICATIONS */
+  .app-card { background: var(--card); border-radius: 8px; border: 1px solid var(--rule); padding: 1rem 1.25rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 1.5rem; }
+  .modal-box { background: #fff; border-radius: 12px; padding: 2rem; width: 100%; max-width: 580px; max-height: 80vh; overflow-y: auto; }
+  .modal-content { font-family: var(--sans); font-size: 13px; line-height: 1.8; color: #333; white-space: pre-wrap; word-break: break-word; background: #f8f7f4; border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; border: 1px solid var(--rule); }
+
+  /* API KEY BANNER */
+  .key-banner { background: #fff8f0; border: 1px solid #fde68a; border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .key-status { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 4px; }
+
+  /* SECTION HEADER */
+  .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+
+  /* FILTER PILLS */
+  .filter-pill { background: #fff; border: 1px solid var(--rule); border-radius: 5px; padding: 0.35rem 0.75rem; font-size: 12px; cursor: pointer; font-weight: 400; font-family: var(--sans); }
+  .filter-pill.active { background: var(--navy); color: #fff; border-color: var(--navy); font-weight: 500; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .stats-grid { grid-template-columns: repeat(3, 1fr); }
+    nav .nav-sub { display: none; }
+  }
+
+  /* VIEWS */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* JOBS SPLIT */
+  .jobs-split { display: grid; gap: 1.5rem; align-items: start; }
+  .jobs-split.with-panel { grid-template-columns: 380px 1fr; }
+  .jobs-split.no-panel { grid-template-columns: 1fr; }
+
+  /* EMPTY STATE */
+  .empty { text-align: center; padding: 3rem; color: var(--soft); }
+  .empty-icon { font-size: 28px; opacity: 0.3; margin-bottom: 0.5rem; }
+
+  /* SPINNER */
+  .spin { display: inline-block; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ACTION GRID */
+  .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <span class="nav-logo">Job Machine</span>
+    <span class="nav-sub">Aditya Mandpe</span>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showView('dashboard')">Dashboard</button>
+    <button class="nav-tab" onclick="showView('jobs')">Jobs</button>
+    <button class="nav-tab" onclick="showView('applications')">Applications</button>
+  </div>
+</nav>
+
+<!-- DASHBOARD -->
+<div id="view-dashboard" class="view active">
+  <div class="wrap">
+    <div style="margin-bottom:2rem;">
+      <h1 class="serif" style="font-size:34px;margin-bottom:4px;">Dashboard</h1>
+      <p style="color:var(--soft);font-size:14px;">Your job search at a glance</p>
+    </div>
+
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="stat-total" style="color:var(--navy);">0</div><div class="stat-label">Jobs Found</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-scored" style="color:var(--blue);">0</div><div class="stat-label">Scored</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-strong" style="color:var(--green);">0</div><div class="stat-label">Strong Match</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-good" style="color:#7c3aed;">0</div><div class="stat-label">Good Fit</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-applied" style="color:var(--gold);">0</div><div class="stat-label">Applied</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-week" style="color:var(--navy);">0</div><div class="stat-label">This Week</div></div>
+    </div>
+
+    <!-- API Key -->
+    <div class="key-banner" id="key-banner">
+      <div style="flex:1;">
+        <div style="font-weight:500;font-size:14px;margin-bottom:2px;">Anthropic API Key <span id="key-status" class="key-status" style="background:#fef2f2;color:#b91c1c;">Not set</span></div>
+        <div style="font-size:12px;color:var(--soft);">Required for job scoring, cover letters, and outreach generation. Get yours at console.anthropic.com</div>
+      </div>
+      <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+        <input type="password" id="api-key-input" placeholder="sk-ant-..." style="width:260px;resize:none;" />
+        <button class="btn btn-gold" onclick="saveApiKey()">Save Key</button>
+      </div>
+    </div>
+
+    <!-- Search Card -->
+    <div class="card" style="margin-bottom:1.5rem;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;">
+        <div>
+          <div style="font-weight:500;font-size:15px;margin-bottom:3px;">Add Jobs</div>
+          <div style="font-size:12px;color:var(--soft);max-width:520px;">Paste job descriptions directly from LinkedIn, Naukri, or any job board. Claude parses and adds them automatically.</div>
+        </div>
+        <button class="btn btn-secondary" onclick="togglePaste()" id="paste-btn">Paste Job</button>
+      </div>
+      <div id="paste-area" style="display:none;margin-top:1rem;">
+        <textarea id="paste-input" rows="5" placeholder="Paste the full job description text here. On LinkedIn: open the job, scroll to the description section, select all text, copy and paste here."></textarea>
+        <div style="margin-top:0.5rem;display:flex;gap:0.5rem;">
+          <button class="btn btn-gold" onclick="addPastedJob()">Add This Job</button>
+          <button class="btn btn-secondary" onclick="togglePaste()">Cancel</button>
+        </div>
+      </div>
+      <div id="paste-msg" style="font-size:13px;color:var(--gold);font-style:italic;margin-top:0.5rem;display:none;"></div>
+    </div>
+
+    <!-- Top Matches -->
+    <div class="card" id="top-matches" style="display:none;">
+      <div style="font-weight:500;font-size:15px;margin-bottom:1rem;">Top Matches</div>
+      <div id="top-matches-list"></div>
+      <button class="btn btn-ghost" style="margin-top:0.75rem;" onclick="showView('jobs')">View all jobs</button>
+    </div>
+  </div>
+</div>
+
+<!-- JOBS -->
+<div id="view-jobs" class="view">
+  <div class="wrap">
+    <div id="jobs-container">
+      <div class="section-header">
+        <h2 class="serif" style="font-size:26px;">Jobs <span id="jobs-count" style="color:var(--faint);font-size:18px;"></span></h2>
+      </div>
+      <div id="search-msg" style="font-size:12px;color:var(--gold);margin-bottom:0.75rem;font-style:italic;display:none;"></div>
+      <div id="jobs-split" class="jobs-split no-panel">
+        <div id="job-list"></div>
+        <div id="detail-panel" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APPLICATIONS -->
+<div id="view-applications" class="view">
+  <div class="wrap">
+    <div class="section-header">
+      <h2 class="serif" style="font-size:30px;">Applications</h2>
+      <div style="display:flex;gap:0.4rem;">
+        <button class="filter-pill active" id="filter-all" onclick="setFilter('all')">All time</button>
+        <button class="filter-pill" id="filter-week" onclick="setFilter('week')">This week</button>
+        <button class="filter-pill" id="filter-month" onclick="setFilter('month')">This month</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;">
+      <div class="stat-card"><div class="stat-num serif" id="app-week" style="color:var(--navy);">0</div><div class="stat-label">This Week</div></div>
+      <div class="stat-card"><div class="stat-num serif" id="app-month" style="color:var(--navy);">0</div><div class="stat-label">This Month</div></div>
+      <div class="stat-card"><div class="stat-num serif" id="app-total" style="color:var(--navy);">0</div><div class="stat-label">Total</div></div>
+    </div>
+    <div id="app-list"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+      <h3 class="serif" style="font-size:22px;" id="modal-title">Cover Letter</h3>
+      <button onclick="closeModal()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#aaa;line-height:1;">×</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ── Profile ──────────────────────────────────────────────────────────────────
+const PROFILE = `
+CANDIDATE: Aditya Mandpe
+CURRENT ROLE: Senior Manager, Creative Direction at Myntra (India's largest fashion platform)
+TOTAL EXPERIENCE: 9+ years
+LOCATION: Bengaluru, India. Open to: India, Global Remote, UAE, US/Europe
+PORTFOLIO: aditya-mandpe.github.io
+
+KEY ACHIEVEMENTS:
+- Pioneered full AI video and imagery production at Myntra: 90% of catalog output now AI-generated
+- Built 40+ person creative team from scratch in 4 years (7 direct reports, 2 Ops Managers)
+- Social Styled AI Videos: 4-4.5% ATC improvement, peak months 7-8% ATC uplift
+- AI imagery: 10% higher ATC, 15-20% higher CTR vs shoot-based
+- 4-5x ROI on AI production investment in peak year, 2-3x steady state
+- 12,000+ prompt library: 25% manual effort reduction
+- Agentic video editing: 40% efficiency gain, same headcount
+- AI imagery pipeline: 20-25 people now doing work of 40-45
+
+CORE SKILLS: Runway, Kling, Midjourney, Vertex AI, Gemini, Claude, creative direction, video production, catalog production, content strategy, large team management (40+), hiring, performance reviews, stakeholder management, process optimisation, automation, KPI tracking
+
+TARGET ROLES (BROAD - not restricted to e-commerce):
+- Creative Director, Head of Creative, Creative Lead
+- Head of Content Operations, Content Operations Director
+- AI Transformation Lead, GenAI Program Manager, AI Adoption Lead
+- Creative Excellence Manager, Head of Production
+- Senior Manager AI Programs, Studio Operations Lead
+- Any senior role needing large team management + AI/content expertise
+
+TARGET COMPANIES: GCCs in Bengaluru (BCG, JP Morgan, PwC, Deloitte, Accenture, EY, KPMG, Capgemini, Wells Fargo, Goldman Sachs, etc.), D2C brands, media companies, global agencies, tech companies, consulting firms. Actively seeking to move outside e-commerce.
+`;
+
+// ── State ────────────────────────────────────────────────────────────────────
+let jobs = [];
+let apps = [];
+let apiKey = '';
+let selectedJob = null;
+let appFilter = 'all';
+let scoringId = null;
+
+// ── Storage ───────────────────────────────────────────────────────────────────
+const load = () => {
+  try { jobs = JSON.parse(localStorage.getItem('jm_jobs') || '[]'); } catch { jobs = []; }
+  try { apps = JSON.parse(localStorage.getItem('jm_apps') || '[]'); } catch { apps = []; }
+  try { apiKey = localStorage.getItem('jm_apikey') || ''; } catch { apiKey = ''; }
+};
+
+const save = () => {
+  try { localStorage.setItem('jm_jobs', JSON.stringify(jobs)); } catch {}
+  try { localStorage.setItem('jm_apps', JSON.stringify(apps)); } catch {}
+};
+
+// ── API ───────────────────────────────────────────────────────────────────────
+const callClaude = async (system, user) => {
+  if (!apiKey) throw new Error('No API key');
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system, messages: [{ role: 'user', content: user }] })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.content?.[0]?.text || '';
+};
+
+// ── API Key ───────────────────────────────────────────────────────────────────
+const saveApiKey = () => {
+  const val = document.getElementById('api-key-input').value.trim();
+  if (!val) return;
+  apiKey = val;
+  localStorage.setItem('jm_apikey', val);
+  document.getElementById('api-key-input').value = '';
+  updateKeyStatus();
+};
+
+const updateKeyStatus = () => {
+  const el = document.getElementById('key-status');
+  if (apiKey) {
+    el.textContent = 'Connected';
+    el.style.background = '#f0fdf4';
+    el.style.color = '#15803d';
+  } else {
+    el.textContent = 'Not set';
+    el.style.background = '#fef2f2';
+    el.style.color = '#b91c1c';
+  }
+};
+
+// ── Views ─────────────────────────────────────────────────────────────────────
+const showView = (name) => {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => { if (t.textContent.toLowerCase().trim() === name) t.classList.add('active'); });
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'jobs') renderJobs();
+  if (name === 'applications') renderApplications();
+};
+
+// ── Paste Job ─────────────────────────────────────────────────────────────────
+const togglePaste = () => {
+  const area = document.getElementById('paste-area');
+  area.style.display = area.style.display === 'none' ? 'block' : 'none';
+};
+
+const showMsg = (id, text, color = 'var(--gold)') => {
+  const el = document.getElementById(id);
+  el.textContent = text; el.style.color = color; el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 4000);
+};
+
+const addPastedJob = async () => {
+  const val = document.getElementById('paste-input').value.trim();
+  if (!val) return;
+  if (!apiKey) { showMsg('paste-msg', 'Please set your API key first.', 'var(--red)'); return; }
+  const isUrlOnly = val.match(/^https?:\/\/\S+$/) && val.split('\n').length === 1;
+  if (isUrlOnly) {
+    document.getElementById('paste-input').value = 'Please paste the full job description text, not just the URL.\n\nOn LinkedIn: open the job, scroll to the description, select all text in that section, copy and paste here.';
+    return;
+  }
+  showMsg('paste-msg', 'Parsing job description...');
+  try {
+    const text = await callClaude(
+      'Extract job info from text. Return ONLY valid JSON object, no markdown, no other text.',
+      `Extract from this job posting:\n${val}\n\nReturn: {"title":"","company":"","location":"","salary":"","url":"","description":"2-3 sentence summary of the role and requirements"}`
+    );
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match) {
+      const parsed = JSON.parse(match[0]);
+      const job = { ...parsed, id: `p-${Date.now()}`, score: null, addedAt: new Date().toISOString(), source: 'manual' };
+      jobs.push(job); save();
+      document.getElementById('paste-input').value = '';
+      togglePaste();
+      showMsg('paste-msg', 'Job added. Go to Jobs tab to score it.', 'var(--green)');
+      renderDashboard();
+    }
+  } catch (e) { showMsg('paste-msg', 'Error: ' + e.message, 'var(--red)'); }
+};
+
+// ── Scoring ───────────────────────────────────────────────────────────────────
+const verdictClass = (v) => ({ 'Strong Match': 'v-strong', 'Good Fit': 'v-good', 'Possible': 'v-possible', 'Weak Match': 'v-weak' }[v] || 'v-possible');
+const verdictColor = (v) => ({ 'Strong Match': 'var(--green)', 'Good Fit': 'var(--blue)', 'Possible': 'var(--amber)', 'Weak Match': 'var(--red)' }[v] || 'var(--amber)');
+
+const scoreJob = async (job) => {
+  if (!apiKey) { alert('Please set your API key first.'); return; }
+  scoringId = job.id;
+  renderJobs();
+  try {
+    const text = await callClaude(
+      'You are a career coach. Return ONLY valid JSON, no markdown, no other text.',
+      `Score this job for candidate.\n\nCANDIDATE:\n${PROFILE}\n\nJOB:\nTitle: ${job.title}\nCompany: ${job.company}\nLocation: ${job.location}\nDescription: ${job.description}\n\nReturn JSON:\n{"score":0-100,"verdict":"Strong Match|Good Fit|Possible|Weak Match","aiSkillsMatch":0-100,"leadershipMatch":0-100,"highlights":["up to 3 strengths"],"gaps":["up to 2 gaps if real"],"strategy":"2 sentence positioning advice","connectWith":"specific title to reach out to","applyTips":["2-3 specific application tips"]}`
+    );
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match) {
+      const sc = JSON.parse(match[0]);
+      jobs = jobs.map(j => j.id === job.id ? { ...j, score: sc } : j);
+      if (selectedJob?.id === job.id) selectedJob = { ...job, score: sc };
+      save();
+    }
+  } catch (e) { alert('Scoring error: ' + e.message); }
+  scoringId = null;
+  renderJobs();
+  renderDashboard();
+};
+
+// ── Generate Content ──────────────────────────────────────────────────────────
+const generate = async (type, job) => {
+  if (!apiKey) { alert('Please set your API key first.'); return; }
+  const titles = { cover: 'Cover Letter', email: 'Outreach Email', linkedin: 'LinkedIn Message' };
+  showModal(titles[type], '<div style="text-align:center;padding:2rem;color:var(--soft);">Generating...</div>');
+  try {
+    let text = '';
+    if (type === 'cover') {
+      text = await callClaude(
+        'Write a cover letter for Aditya Mandpe. Rules: Direct confident tone. No AI phrases. No em dashes. No "I am writing to express". Max 220 words. 3 short paragraphs. Lead with impact not formality. Human voice.',
+        `Job: ${job.title} at ${job.company}\nLocation: ${job.location}\nDescription: ${job.description}\nStrategy: ${job.score?.strategy || ''}\n\nCandidate profile:\n${PROFILE}`
+      );
+    } else if (type === 'email') {
+      text = await callClaude(
+        'Write a recruiter outreach email for Aditya Mandpe. Rules: Max 110 words. Direct. No fluff. No em dashes. Include subject line. Human tone not AI-sounding. Format: Subject: [line]\n\n[body]',
+        `Job: ${job.title} at ${job.company}\nConnect with: ${job.score?.connectWith || 'Hiring Manager'}\nCandidate:\n${PROFILE}`
+      );
+    } else if (type === 'linkedin') {
+      text = await callClaude(
+        'Write a LinkedIn connection request message. Max 55 words. Casual but professional. No em dashes. No AI phrases. No "I came across your profile". Direct and warm.',
+        `Sending to: ${job.score?.connectWith || 'recruiter'} at ${job.company}\nRe: ${job.title} role\nSender: Aditya Mandpe, Senior Manager Creative Direction at Myntra, 9+ years experience, leading AI production at scale.`
+      );
+    }
+    showModal(titles[type], `<div class="modal-content">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div><button class="btn btn-primary" onclick="copyText(\`${text.replace(/`/g,'\\`')}\`)">Copy to Clipboard</button>`);
+  } catch (e) { showModal(titles[type], `<p style="color:var(--red);">Error: ${e.message}</p>`); }
+};
+
+const copyText = (text) => {
+  navigator.clipboard.writeText(text);
+  const btn = document.querySelector('.modal-box .btn-primary');
+  if (btn) { btn.textContent = 'Copied!'; setTimeout(() => { btn.textContent = 'Copy to Clipboard'; }, 2000); }
+};
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+const showModal = (title, body) => {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal').style.display = 'flex';
+};
+const closeModal = () => { document.getElementById('modal').style.display = 'none'; };
+
+// ── Mark Applied ──────────────────────────────────────────────────────────────
+const markApplied = (job) => {
+  apps = [...apps.filter(a => a.id !== job.id), { ...job, appliedAt: new Date().toISOString(), status: 'Applied' }];
+  try { localStorage.setItem('jm_apps', JSON.stringify(apps)); } catch {}
+  renderJobs();
+  renderDashboard();
+};
+
+const isApplied = (id) => apps.some(a => a.id === id);
+
+// ── Remove Job ────────────────────────────────────────────────────────────────
+const removeJob = (id) => {
+  jobs = jobs.filter(j => j.id !== id);
+  if (selectedJob?.id === id) { selectedJob = null; }
+  save(); renderJobs(); renderDashboard();
+};
+
+// ── RENDER DASHBOARD ──────────────────────────────────────────────────────────
+const renderDashboard = () => {
+  const now = new Date();
+  const thisWeek = apps.filter(a => (now - new Date(a.appliedAt)) < 7 * 86400000).length;
+  document.getElementById('stat-total').textContent = jobs.length;
+  document.getElementById('stat-scored').textContent = jobs.filter(j => j.score).length;
+  document.getElementById('stat-strong').textContent = jobs.filter(j => j.score?.verdict === 'Strong Match').length;
+  document.getElementById('stat-good').textContent = jobs.filter(j => j.score?.verdict === 'Good Fit').length;
+  document.getElementById('stat-applied').textContent = apps.length;
+  document.getElementById('stat-week').textContent = thisWeek;
+
+  const topScored = [...jobs].filter(j => j.score).sort((a, b) => b.score.score - a.score.score).slice(0, 4);
+  const tmEl = document.getElementById('top-matches');
+  if (topScored.length > 0) {
+    tmEl.style.display = 'block';
+    document.getElementById('top-matches-list').innerHTML = topScored.map((job, i) => `
+      <div onclick="showView('jobs');setTimeout(()=>selectJob('${job.id}'),100)" style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 0;${i > 0 ? 'border-top:1px solid #f0ede8;' : ''}cursor:pointer;">
+        <div>
+          <div style="font-weight:500;font-size:14px;">${job.title}</div>
+          <div style="font-size:12px;color:var(--soft);">${job.company} · ${job.location}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          <span class="verdict-badge ${verdictClass(job.score.verdict)}">${job.score.verdict}</span>
+          <span class="serif" style="font-size:22px;color:var(--navy);">${job.score.score}</span>
+        </div>
+      </div>`).join('');
+  } else {
+    tmEl.style.display = 'none';
+  }
+};
+
+// ── RENDER JOBS ───────────────────────────────────────────────────────────────
+const renderJobs = () => {
+  const sorted = [...jobs].sort((a, b) => (b.score?.score || 0) - (a.score?.score || 0));
+  document.getElementById('jobs-count').textContent = `(${jobs.length})`;
+
+  const split = document.getElementById('jobs-split');
+  split.className = 'jobs-split ' + (selectedJob ? 'with-panel' : 'no-panel');
+
+  const detailEl = document.getElementById('detail-panel');
+  detailEl.style.display = selectedJob ? 'block' : 'none';
+
+  document.getElementById('job-list').innerHTML = jobs.length === 0
+    ? `<div class="empty"><div class="empty-icon">◎</div><div style="font-weight:500;color:var(--mid);">No jobs yet</div><div style="font-size:13px;margin-top:4px;">Paste a job description from the Dashboard to get started</div></div>`
+    : sorted.map(job => `
+      <div class="job-card ${selectedJob?.id === job.id ? 'selected' : ''}" onclick="selectJob('${job.id}')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div style="flex:1;margin-right:0.5rem;">
+            <div style="font-weight:500;font-size:13px;margin-bottom:2px;line-height:1.3;">${job.title}</div>
+            <div style="font-size:12px;color:var(--mid);">${job.company}</div>
+            <div style="font-size:11px;color:var(--soft);margin-top:2px;">${job.location}${job.salary ? ' · ' + job.salary : ''}</div>
+            ${isApplied(job.id) ? '<span class="tag" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;margin-top:4px;">Applied</span>' : ''}
+          </div>
+          <div style="text-align:right;flex-shrink:0;">
+            ${job.score
+              ? `<div class="serif" style="font-size:24px;color:${verdictColor(job.score.verdict)};line-height:1;">${job.score.score}</div>
+                 <div style="font-size:10px;font-weight:500;color:${verdictColor(job.score.verdict)};margin-top:2px;">${job.score.verdict}</div>`
+              : `<button class="btn btn-secondary" style="font-size:11px;padding:3px 8px;" onclick="event.stopPropagation();scoreJob(jobs.find(j=>j.id==='${job.id}'))">${scoringId === job.id ? '<span class="spin">◌</span>' : 'Score'}</button>`
+            }
+          </div>
+        </div>
+      </div>`).join('');
+
+  if (selectedJob) renderDetailPanel();
+};
+
+const selectJob = (id) => {
+  selectedJob = jobs.find(j => j.id === id) || null;
+  renderJobs();
+};
+
+const renderDetailPanel = () => {
+  if (!selectedJob) return;
+  const job = selectedJob;
+  const sc = job.score;
+
+  document.getElementById('detail-panel').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.25rem;">
+      <div>
+        <h3 class="serif" style="font-size:22px;margin-bottom:4px;">${job.title}</h3>
+        <div style="font-size:14px;color:var(--mid);">${job.company} · ${job.location}</div>
+        ${job.salary ? `<div style="font-size:13px;color:var(--gold);font-weight:500;margin-top:2px;">${job.salary}</div>` : ''}
+      </div>
+      <button onclick="selectedJob=null;renderJobs();" style="background:none;border:none;font-size:20px;cursor:pointer;color:#aaa;line-height:1;">×</button>
+    </div>
+
+    ${sc ? `
+      <div class="score-block ${verdictClass(sc.verdict)}" style="border:1px solid;">
+        <div style="display:flex;gap:1rem;align-items:center;margin-bottom:0.75rem;">
+          <div class="score-large" style="color:${verdictColor(sc.verdict)};">${sc.score}</div>
+          <div>
+            <div style="font-weight:600;color:${verdictColor(sc.verdict)};font-size:15px;">${sc.verdict}</div>
+            <div style="font-size:12px;color:var(--soft);margin-top:3px;">AI Skills ${sc.aiSkillsMatch}% · Leadership ${sc.leadershipMatch}%</div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:#444;font-style:italic;margin-bottom:0.75rem;line-height:1.6;">${sc.strategy}</p>
+        <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:${sc.applyTips?.length ? '0.75rem' : '0'};">
+          ${(sc.highlights || []).map(h => `<span class="tag" style="background:#fff;border:1px solid #bbf7d0;color:#065f46;">+ ${h}</span>`).join('')}
+          ${(sc.gaps || []).map(g => `<span class="tag" style="background:#fff;border:1px solid #fecaca;color:#991b1b;">- ${g}</span>`).join('')}
+        </div>
+        ${sc.applyTips?.length ? `
+          <div style="padding-top:0.75rem;border-top:1px solid rgba(0,0,0,0.06);">
+            <div style="font-size:11px;font-weight:500;color:#888;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.08em;">How to apply</div>
+            ${sc.applyTips.map(t => `<div class="apply-tip">· ${t}</div>`).join('')}
+          </div>` : ''}
+      </div>
+    ` : `
+      <button class="btn btn-primary btn-full" style="margin-bottom:1.25rem;" onclick="scoreJob(jobs.find(j=>j.id==='${job.id}'))">
+        ${scoringId === job.id ? '<span class="spin">◌</span> Analysing...' : 'Analyse Match Score'}
+      </button>
+    `}
+
+    <p style="font-size:13px;color:var(--mid);line-height:1.75;margin-bottom:1.25rem;">${job.description}</p>
+
+    ${sc?.connectWith ? `<div style="background:#f8f7f4;border-radius:6px;padding:0.7rem 0.9rem;margin-bottom:1.25rem;font-size:12px;"><span style="font-weight:500;">Connect with: </span>${sc.connectWith} at ${job.company}</div>` : ''}
+
+    <div class="action-grid">
+      <button class="btn btn-primary" onclick="generate('cover', jobs.find(j=>j.id==='${job.id}'))">Cover Letter</button>
+      <button class="btn btn-secondary" onclick="generate('email', jobs.find(j=>j.id==='${job.id}'))">Outreach Email</button>
+      <button class="btn btn-secondary" onclick="generate('linkedin', jobs.find(j=>j.id==='${job.id}'))">LinkedIn Message</button>
+      <button class="btn ${isApplied(job.id) ? 'btn-secondary' : 'btn-gold'}" onclick="markApplied(jobs.find(j=>j.id==='${job.id}'))">${isApplied(job.id) ? 'Applied' : 'Mark Applied'}</button>
+    </div>
+    <div style="display:flex;gap:0.5rem;margin-top:0.5rem;">
+      ${job.url ? `<a href="${job.url}" target="_blank" style="flex:1;text-align:center;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:6px;padding:0.5rem;font-size:12px;text-decoration:none;font-weight:500;">View Job</a>` : ''}
+      <button class="btn btn-danger" onclick="removeJob('${job.id}')">Remove</button>
+    </div>
+  `;
+};
+
+// ── RENDER APPLICATIONS ───────────────────────────────────────────────────────
+const setFilter = (f) => {
+  appFilter = f;
+  ['all','week','month'].forEach(x => {
+    document.getElementById('filter-' + x).className = 'filter-pill' + (x === f ? ' active' : '');
+  });
+  renderApplications();
+};
+
+const renderApplications = () => {
+  const now = new Date();
+  const week = apps.filter(a => (now - new Date(a.appliedAt)) < 7 * 86400000);
+  const month = apps.filter(a => { const d = new Date(a.appliedAt); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); });
+
+  document.getElementById('app-week').textContent = week.length;
+  document.getElementById('app-month').textContent = month.length;
+  document.getElementById('app-total').textContent = apps.length;
+
+  const filtered = appFilter === 'all' ? apps : appFilter === 'week' ? week : month;
+
+  document.getElementById('app-list').innerHTML = filtered.length === 0
+    ? `<div class="empty card"><div class="empty-icon">◎</div><div style="font-weight:500;color:var(--mid);">No applications ${appFilter !== 'all' ? appFilter === 'week' ? 'this week' : 'this month' : 'yet'}</div><div style="font-size:13px;margin-top:4px;">Mark jobs as applied from the Jobs tab</div></div>`
+    : [...filtered].reverse().map(app => `
+      <div class="app-card">
+        <div>
+          <div style="font-weight:500;font-size:14px;">${app.title}</div>
+          <div style="font-size:13px;color:var(--mid);">${app.company} · ${app.location}</div>
+          <div style="font-size:11px;color:var(--soft);margin-top:3px;">Applied ${new Date(app.appliedAt).toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'})}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          ${app.score ? `<span class="serif" style="font-size:20px;color:${verdictColor(app.score.verdict)};">${app.score.score}</span>` : ''}
+          <span class="tag" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;">Applied</span>
+        </div>
+      </div>`).join('');
+};
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+load();
+updateKeyStatus();
+renderDashboard();
+renderJobs();
+renderApplications();
+
+// Close modal on overlay click
+document.getElementById('modal').addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
+</script>
+</body>
+</html>
